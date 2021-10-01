@@ -567,8 +567,12 @@ if args.dpi:
 
         if verbose:
             dbg.stdout("Setting DPI for {0}: {1}".format(device_name, dpi_values))
-
-        result = middleman.set_device_state(device["backend"], device["uid"], device["serial"], None, "dpi", dpi_values, [])
+        
+        if device["dpi_x"] == None:
+            # Device only supports fixed DPI X values, such as DeathAdder 3.5G
+            result = middleman.set_device_state(device["backend"], device["uid"], device["serial"], None, "dpi", dpi_values[0], [])
+        else:
+            result = middleman.set_device_state(device["backend"], device["uid"], device["serial"], None, "dpi", dpi_values, [])
 
         if result == False:
             dbg.stdout(_("Error: [device] - Invalid request!").replace("[device]", device_name), dbg.error)
